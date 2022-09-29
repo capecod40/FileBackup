@@ -1,7 +1,7 @@
 ﻿# CPSC 210 Project: File Backup Application
 My project for this term is an application that creates a backup of a directory. The user will be able to select a source and destination folder. The application will copy the contents of the source folder (including the content of any subfolders) to the destination directory. 
 
-This application is meant to be a portable, lightweight, and easy to use alternative to more comprehensive and feature rich file system backup applications. The layout of the user interface will be simple and intuitive to make it accessible to all PC users. Aside from file backups, this application will also feature a logging system. From the log, a user will be able to see the timestamp of any given backup. Tentative ideas for more features are also listed below. 
+This application is meant to be a portable, lightweight, and easy to use alternative to more comprehensive and feature rich file system backup applications. The layout of the user interface will be simple and intuitive to make it accessible for all PC users. Aside from file backups, this application will also feature a logging system. From the log, a user will be able to see the timestamp of any given backup. Tentative ideas for more features are also listed below. 
 ## Core Features
  - File backup: 
 	- User can select source and destination folder
@@ -11,7 +11,7 @@ This application is meant to be a portable, lightweight, and easy to use alterna
 	- User will be able to see timestamp of each backup
 		 - Each backup will create  a hidden text file in the root directory of the backup in the destination folder to indicate timestamp of backup
 ## Tentative Ideas
-- A graphical representation of the folder structure of each backup is created alongside each backup
+- A graphical representation of the folder structure is created alongside each backup
     - Allows user to easily examine directory structure/size without the complexity of a file comparison feature 
 - User can set timer for recurring backups
     - Throws error in case of missing source/destination directory
