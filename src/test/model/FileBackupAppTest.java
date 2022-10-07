@@ -1,11 +1,13 @@
 package model;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,42 +25,28 @@ class FileBackupAppTest {
     }
 
     @Test
-    public void copyFileTest() {
-        File input = new File("in.txt");
-        File output = new File("out.txt");
-        assertTrue(input.exists());
-        assertTrue(output.exists());
-
-        try {
-            app.copyFile(input, output);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    @Test
     public void copyFolderTest() {
-        File source = new File("src/outTest");
-        File destination = new File("src/inTest");
+        File source = new File("src/inTest");
+        File destination = new File("src/outTest");
 
         assertTrue(source.exists());
-        assertTrue(destination.exists());
+        assertTrue(app.copyFolder(source, destination));
 
-        for (String item : source.list()) {
-            Path path = new Path(item);
-            try {
-                Files.copy(path, destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (Exception e) {
-
-            }
-        }
     }
 
     @Test
-    public void inputPathsTest() {
-        app.inputPaths("in.txt", "out.txt");
-        if (!Files.exists(app.getSrc())) {
-            System.out.println("File does not exist!");
-        }
+    public void inputFilePathsTest() {
+        app.inputFilePaths("src/inTest", "src/outTest");
+        assertEquals("src\\inTest", app.getSrc().getPath());
+        assertEquals("src\\outTest", app.getDest().getPath());
     }
+
+    @Test
+    public void createTimestampTest() {
+        app.inputFilePaths("src/inTest", "src/outTest");
+        assertTrue(app.getDest().exists());
+        assertTrue(app.getSrc().exists());
+        assertTrue(app.createTimeStamp());
+    }
+
 }

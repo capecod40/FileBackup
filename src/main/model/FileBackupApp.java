@@ -1,57 +1,68 @@
 package model;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.*;
+import java.time.LocalTime;
 
+// Uses Apache Commons IO
 public class FileBackupApp {
-    private Path src;
-    private Path dest;
-
+    private File src;
+    private File dest;
 
     public FileBackupApp() {
-
+        src = dest = null;
     }
 
-    public void copyFolder(File src, File dest) {
-
+    // REQUIRES: src and dest are relative to project directory
+    // MODIFIES: this
+    // EFFECTS: creates and stores File objects according to given String paths
+    public void inputFilePaths(String src, String dest) {
+        this.src = new File(src);
+        this.dest = new File(dest);
     }
 
-    public void copyFile(File src, File dest) throws IOException {
-        Files.copy(src.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-    }
-
-    // REQUIRES: src is a valid path, dest is a valid folder path
-    // MODIFIES: this, filesystem?
-    // EFFECTS: Validates and sets src and dest
-    // dest must be a folder, src can be a folder or a file
-    // if dest is a folder that doesn't exist, give option to create one
-    public void inputPaths(String src, String dest) {
-/*        this.src = Paths.get(src);
-        this.dest = Paths.get(dest);
-        if (!Files.exists(this.src)) {
-           // warning
+    // TODO: test for subfolder copying
+    // REQUIRES: valid src
+    // MODIFIES: file system
+    // EFFECTS: copies src directory to dest directory and handles exceptions
+    // If there are files in the dest, nothing happens to them (for now >:D)
+    public boolean copyFolder(File src, File dest) {
+        try {
+            FileUtils.copyDirectory(src, dest);
+        } catch (IOException e) {
+            System.out.println("Error [copy folder]: " + e.getMessage());
+            return false;
         }
-        if (!Files.exists(this.dest)) {
-            // warning
-            // option to create folder
-        }*/
+        return true;
     }
 
-    public Path getSrc() {
+    // TODO: make timestamp file hidden
+    // REQUIRES: src and dest are not null (i.e. a backup has already been created)
+    // MODIFIES: destination directory
+    // EFFECTS: creates a txt file containing the source directory and current time
+    public boolean createTimeStamp() {
+        File timestamp = new File(dest.getPath() + "/backup_timestamp.txt");
+        try {
+            FileUtils.writeStringToFile(timestamp,
+                    "Source: " + src.getPath() + "\n" + LocalTime.now().toString(),
+                    Charset.defaultCharset());
+        } catch (IOException e) {
+            System.out.println("Error [timestamp]: " + e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public File getSrc() {
         return src;
     }
 
-    public void setSrc(Path src) {
-        this.src = src;
-    }
-
-    public Path getDest() {
+    public File getDest() {
         return dest;
-    }
-
-    public void setDest(Path dest) {
-        this.dest = dest;
     }
 
 }
