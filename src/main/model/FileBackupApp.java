@@ -17,6 +17,21 @@ public class FileBackupApp {
         src = dest = null;
     }
 
+    // REQUIRES: valid src and dest File objects
+    // MODIFIES: file system
+    // EFFECTS:
+    // 1. hasFreeMemory
+    // 2. copyFolder
+    // 3. createTimeStamp
+    public void backup() throws Exception {
+        if (!hasFreeMemory()) {
+            throw new Exception("Not enough free space!");
+        }
+
+        copyFolder(src, dest);
+        createTimeStamp();
+    }
+
     // REQUIRES: src and dest are relative to project directory
     // MODIFIES: this
     // EFFECTS: creates and stores File objects according to given String paths
@@ -55,6 +70,17 @@ public class FileBackupApp {
             return false;
         }
         return true;
+    }
+
+    // REQUIRES: valid dest and src File objects
+    // EFFECTS: checks that destination has enough space for copying src directory
+    public boolean hasFreeMemory() {
+        if (dest.getFreeSpace() < FileUtils.sizeOfDirectory(src)) {
+            System.out.println("Error [memory check]: Not enough free space in destination directory!");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public File getSrc() {

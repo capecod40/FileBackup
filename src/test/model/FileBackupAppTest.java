@@ -22,6 +22,17 @@ class FileBackupAppTest {
     @BeforeEach
     public void setup() {
         app = new FileBackupApp();
+        app.inputFilePaths("src/inTest", "src/outTest");
+    }
+
+    @Test
+    public void backupTest() {
+        try {
+            app.backup();
+        } catch (Exception e) {
+            System.out.println("Error [backup]: " + e.getMessage());
+        }
+
     }
 
     @Test
@@ -43,10 +54,15 @@ class FileBackupAppTest {
 
     @Test
     public void createTimestampTest() {
-        app.inputFilePaths("src/inTest", "src/outTest");
         assertTrue(app.getDest().exists());
         assertTrue(app.getSrc().exists());
         assertTrue(app.createTimeStamp());
+    }
+
+    @Test
+    public void checkFreeMemoryPrintTest() {
+        System.out.println("Destination space (GB): " + app.getDest().getFreeSpace() / 1000000000.0);
+        System.out.println("Source size (bytes): " + FileUtils.sizeOfDirectory(app.getSrc()));
     }
 
 }
