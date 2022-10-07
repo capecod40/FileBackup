@@ -27,12 +27,12 @@ class FileBackupAppTest {
 
     @Test
     public void backupTest() {
+        assertTrue(app.getSrc().exists());
         try {
             app.backup();
         } catch (Exception e) {
             System.out.println("Error [backup]: " + e.getMessage());
         }
-
     }
 
     @Test

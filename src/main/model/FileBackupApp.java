@@ -24,6 +24,12 @@ public class FileBackupApp {
     // 2. copyFolder
     // 3. createTimeStamp
     public void backup() throws Exception {
+        if (!dest.exists()) {
+            if (!dest.mkdir()) {
+                throw new Exception("Failed to create destination directory!");
+            }
+        }
+
         if (!hasFreeMemory()) {
             throw new Exception("Not enough free space!");
         }
