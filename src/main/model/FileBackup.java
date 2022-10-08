@@ -5,7 +5,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.*;
 import java.time.LocalTime;
 
 
@@ -19,12 +18,12 @@ import java.time.LocalTime;
 // This class also checks that the destination has enough free space
 // for the backup.
 // Uses Apache Commons IO
-public class FileBackupApp {
+public class FileBackup {
     private File src;
     private File dest;
 
 
-    public FileBackupApp() {
+    public FileBackup() {
         src = dest = null;
     }
 
@@ -43,13 +42,8 @@ public class FileBackupApp {
             }
         }
 
-        if (!hasFreeMemory()) {
-            throw new Exception("Not enough free space!");
-        }
-
-        if (!copyFolder(src, dest)) {
-            return;
-        }
+        hasFreeMemory();
+        copyFolder(src, dest);
         createTimeStamp();
     }
 
@@ -63,42 +57,29 @@ public class FileBackupApp {
 
     // REQUIRES: valid src and dest File objects, both directories exist
     // MODIFIES: file system
-    // EFFECTS: copies src directory to dest directory and handles exceptions
+    // EFFECTS: copies src directory to dest directory and throws exception in case of failure
     // If there are pre-existing files in the dest, nothing happens to them (for now >:D)
-    public boolean copyFolder(File src, File dest) {
-        try {
-            FileUtils.copyDirectory(src, dest);
-        } catch (IOException e) {
-            System.out.println("Error [copy folder]: " + e.getMessage());
-            return false;
-        }
-        return true;
+    public void copyFolder(File src, File dest) throws IOException {
+        FileUtils.copyDirectory(src, dest);
     }
 
     // REQUIRES: valid src and dest File objects
     // MODIFIES: destination directory
     // EFFECTS: creates a txt file containing the source directory and current time in dest directory
-    public boolean createTimeStamp() {
+    public void createTimeStamp() throws IOException {
         File timestamp = new File(dest.getPath() + "/backup_timestamp.txt");
-        try {
-            FileUtils.writeStringToFile(timestamp,
-                    "Backup success\nSource: " + src.getPath() + "\n" + LocalTime.now().toString(),
-                    Charset.defaultCharset());
-        } catch (IOException e) {
-            System.out.println("Error [timestamp]: " + e.getMessage());
-            return false;
-        }
-        return true;
+
+        FileUtils.writeStringToFile(timestamp,
+                "Backup success\nSource: " + src.getPath() + "\n" + LocalTime.now().toString(),
+                Charset.defaultCharset());
+
     }
 
     // REQUIRES: valid dest and src File objects
     // EFFECTS: checks that destination has enough space for copying src directory
-    public boolean hasFreeMemory() {
+    public void hasFreeMemory() throws Exception {
         if (dest.getFreeSpace() < FileUtils.sizeOfDirectory(src)) {
-            System.out.println("Error [memory check]: Not enough free space in destination directory!");
-            return false;
-        } else {
-            return true;
+            throw new Exception("Not enough free space in destination directory!");
         }
     }
 

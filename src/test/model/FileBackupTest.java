@@ -5,24 +5,20 @@ import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-class FileBackupAppTest {
-    private FileBackupApp app;
+class FileBackupTest {
+    private FileBackup app;
 
-    public FileBackupAppTest() {
+    public FileBackupTest() {
     }
 
     @BeforeEach
     public void setup() {
-        app = new FileBackupApp();
+        app = new FileBackup();
         app.inputFilePaths("src/inTest", "src/outTest");
     }
 
@@ -42,7 +38,11 @@ class FileBackupAppTest {
         File destination = new File("src/outTest");
 
         assertTrue(source.exists());
-        assertTrue(app.copyFolder(source, destination));
+        try {
+            app.copyFolder(source, destination);
+        } catch (Exception e) {
+            System.out.println("Error [copy folder]: " + e.getMessage());
+        }
 
     }
 
@@ -57,7 +57,11 @@ class FileBackupAppTest {
     public void createTimestampTest() {
         assertTrue(app.getDest().exists());
         assertTrue(app.getSrc().exists());
-        assertTrue(app.createTimeStamp());
+        try {
+            app.createTimeStamp();
+        } catch (IOException e) {
+            System.out.println("Error [time stamp]: " + e.getMessage());
+        }
     }
 
     @Test

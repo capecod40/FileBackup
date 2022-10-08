@@ -7,5 +7,7 @@ import java.nio.file.StandardCopyOption;
 
 public class Main {
     public static void main(String[] args) {
+        FileBackupApp app = new FileBackupApp();
+        app.run();
     }
 }
