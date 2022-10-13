@@ -5,17 +5,27 @@ import org.apache.commons.io.FileUtils;
 
 import java.util.Scanner;
 
+// FileBackupApp:
+// Console ui for FileBackup class
 public class FileBackupApp {
     private FileBackup backup;
     private Scanner input;
     boolean quit;
 
+    // EFFECTS: initializes FileBackup and Scanner for keyboard input
+    //              sets quit to false
     public FileBackupApp() {
         backup = new FileBackup();
         input = new Scanner(System.in);
         quit = false;
     }
 
+    // MODIFIES: this
+    // EFFECTS: runs a loop that queries for user input
+    //              user options are:
+    //                  [i] for setting source and destination directory paths
+    //                  [b] to create a backup
+    //                  [q] to quit
     public void run() {
         String userInput;
 
@@ -37,7 +47,7 @@ public class FileBackupApp {
 
     // MODIFIES: this
     // EFFECTS: Prompts user for source and destination directory for backup and
-    // sends paths as strings to backup object
+    // sends paths as strings to FileBackup
     public void readPaths() {
         System.out.println("Enter source directory:");
         String src = input.nextLine();
@@ -46,10 +56,9 @@ public class FileBackupApp {
         backup.inputFilePaths(src, dest);
     }
 
-    // MODIFIES: file system
     // EFFECTS:
     // 1. Displays source and destination directory
-    // 2. Asks user to confirm backup
+    // 2. Asks user to confirm backup ([y] to confirm, any other key to cancel)
     // 3. Runs backup, prints error message and returns if exception thrown
     // 4. Prints success message if backup completes
     public void backup() {
@@ -70,7 +79,4 @@ public class FileBackupApp {
             System.out.println("Backup cancelled");
         }
     }
-
-
-
 }
