@@ -47,6 +47,18 @@ class FileBackupTest {
     }
 
     @Test
+    public void copyFolderFailTest() {
+        File source = new File("");
+        File destination = new File("");
+
+        try {
+            app.copyFolder(source, destination);
+        } catch (Exception e) {
+            System.out.println("Error [copy folder]: " + e.getMessage());
+        }
+    }
+
+    @Test
     public void inputFilePathsTest() {
         app.inputFilePaths("src/inTest", "src/outTest");
         assertEquals("src\\inTest", app.getSrc().getPath());
