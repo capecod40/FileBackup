@@ -12,7 +12,7 @@ public class FileBackupApp {
     private Scanner input;
     boolean quit;
 
-    // EFFECTS: initializes FileBackup and Scanner for keyboard input
+    // EFFECTS: initializes FileBackup and Scanner for keyboard input,
     //              sets quit to false
     public FileBackupApp() {
         backup = new FileBackup();
@@ -47,7 +47,7 @@ public class FileBackupApp {
 
     // MODIFIES: this
     // EFFECTS: Prompts user for source and destination directory for backup and
-    // sends paths as strings to FileBackup
+    //              sends paths as strings to FileBackup
     public void readPaths() {
         System.out.println("Enter source directory:");
         String src = input.nextLine();
