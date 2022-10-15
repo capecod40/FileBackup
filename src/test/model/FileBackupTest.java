@@ -19,7 +19,7 @@ class FileBackupTest {
     @BeforeEach
     public void setup() {
         app = new FileBackup();
-        app.inputFilePaths("src/inTest", "src/outTest");
+        app.inputFilePaths("src/test/inTest", "src/test/outTest");
     }
 
     @Test
@@ -33,9 +33,19 @@ class FileBackupTest {
     }
 
     @Test
+    public void backupFailTest() {
+        app.inputFilePaths("<>", "<>");
+        try {
+            app.backup();
+        } catch (Exception e) {
+            System.out.println("Error [backup]: " + e.getMessage());
+        }
+    }
+
+    @Test
     public void copyFolderTest() {
-        File source = new File("src/inTest");
-        File destination = new File("src/outTest");
+        File source = new File("src/test/inTest");
+        File destination = new File("src/test/outTest");
 
         assertTrue(source.exists());
         try {
@@ -48,7 +58,7 @@ class FileBackupTest {
 
     @Test
     public void copyFolderFailTest() {
-        File source = new File("");
+        File source = new File("<>");
         File destination = new File("");
 
         try {
@@ -60,9 +70,9 @@ class FileBackupTest {
 
     @Test
     public void inputFilePathsTest() {
-        app.inputFilePaths("src/inTest", "src/outTest");
-        assertEquals("src\\inTest", app.getSrc().getPath());
-        assertEquals("src\\outTest", app.getDest().getPath());
+        app.inputFilePaths("src/test/inTest", "src/test/outTest");
+        assertEquals("src\\test\\inTest", app.getSrc().getPath());
+        assertEquals("src\\test\\outTest", app.getDest().getPath());
     }
 
     @Test
