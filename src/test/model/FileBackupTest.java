@@ -34,7 +34,7 @@ class FileBackupTest {
 
     @Test
     public void backupFailTest() {
-        app.inputFilePaths("<>", "<>");
+        app.inputFilePaths("<>", "<>\"/?|*");
         try {
             app.backup();
         } catch (Exception e) {
@@ -87,9 +87,14 @@ class FileBackupTest {
     }
 
     @Test
-    public void checkFreeMemoryPrintTest() {
+    public void hasFreeMemoryDummyPrintTest() {
         System.out.println("Destination space (GB): " + app.getDest().getFreeSpace() / 1000000000.0);
         System.out.println("Source size (bytes): " + FileUtils.sizeOfDirectory(app.getSrc()));
+    }
+
+    @Test
+    public void hasFreeMemoryFailTest() {
+
     }
 
 }
