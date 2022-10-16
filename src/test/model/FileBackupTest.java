@@ -6,8 +6,7 @@ import org.junit.jupiter.api.*;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class FileBackupTest {
@@ -29,6 +28,7 @@ class FileBackupTest {
             app.backup();
         } catch (Exception e) {
             System.out.println("Error [backup]: " + e.getMessage());
+            Assertions.fail();
         }
     }
 
@@ -39,7 +39,9 @@ class FileBackupTest {
             app.backup();
         } catch (Exception e) {
             System.out.println("Error [backup]: " + e.getMessage());
+            return;
         }
+        Assertions.fail();
     }
 
     @Test
@@ -52,6 +54,7 @@ class FileBackupTest {
             app.copyFolder(source, destination);
         } catch (Exception e) {
             System.out.println("Error [copy folder]: " + e.getMessage());
+            Assertions.fail();
         }
     }
 
@@ -64,7 +67,9 @@ class FileBackupTest {
             app.copyFolder(source, destination);
         } catch (Exception e) {
             System.out.println("Error [copy folder]: " + e.getMessage());
+            return;
         }
+        Assertions.fail();
     }
 
     @Test
@@ -82,6 +87,7 @@ class FileBackupTest {
             app.createTimeStamp();
         } catch (IOException e) {
             System.out.println("Error [time stamp]: " + e.getMessage());
+            Assertions.fail();
         }
     }
 
@@ -93,7 +99,9 @@ class FileBackupTest {
 
     @Test
     public void hasFreeMemoryFailTest() {
-        app.inputFilePaths("<>", "<>");
+        app.inputFilePaths("src/test/inTest", "../");
+        hasFreeMemoryDummyPrintTest();
+        assertTrue(app.getDest().getFreeSpace() < FileUtils.sizeOfDirectory(app.getSrc()));
         try {
             app.hasFreeMemory();
         } catch (Exception e) {
