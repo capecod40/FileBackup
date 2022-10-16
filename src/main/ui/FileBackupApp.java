@@ -49,6 +49,7 @@ public class FileBackupApp {
     // EFFECTS: Prompts user for source and destination directory for backup and
     //              sends paths as strings to FileBackup
     public void readPaths() {
+        System.out.println("**Paths must be relative to project directory**");
         System.out.println("Enter source directory:");
         String src = input.nextLine();
         System.out.println("Enter destination directory:");
@@ -74,7 +75,7 @@ public class FileBackupApp {
                 return;
             }
             System.out.println("Backup successful");
-            System.out.println("See backup_timestamp.txt in destination directory for timestamp");
+            System.out.println("See backup_timestamp.txt in destination directory for timestamp and source info");
         } else {
             System.out.println("Backup cancelled");
         }

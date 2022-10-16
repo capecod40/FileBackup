@@ -30,7 +30,7 @@ public class FileBackup {
     // EFFECTS:
     //          1. Checks if the destination directory exists and creates one if it doesn't
     //          2. Checks hasFreeMemory()
-    //          3. Copies source to destination with copyFolder(src, dest)
+    //          3. Copies source to destination with copyFolder or copyFile
     //          4. createTimeStamp()
     //          Throws exceptions if any of the operations fail
     public void backup() throws Exception {
@@ -40,7 +40,11 @@ public class FileBackup {
             }
         }
         // hasFreeMemory();
-        copyFolder(src.getSrc(), dest);
+        if (src.getSrc().isDirectory()) {
+            copyFolder(src.getSrc(), dest);
+        } else {
+            copyFile(src.getSrc(), dest);
+        }
         createTimeStamp();
     }
 
@@ -59,6 +63,13 @@ public class FileBackup {
     //              If there are pre-existing files in the dest, nothing happens to them (for now >:D)
     public void copyFolder(File src, File dest) throws IOException {
         FileUtils.copyDirectory(src, dest);
+    }
+
+    // REQUIRES: this.src and this.dest != null,
+    //              source file and destination directory exist
+    // EFFECTS: copies src file to dest directory and throws exception in case of error
+    public void copyFile(File src, File dest) throws IOException {
+        FileUtils.copyFileToDirectory(src, dest);
     }
 
     // REQUIRES: this.src and this.dest != null,

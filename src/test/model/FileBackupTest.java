@@ -60,6 +60,17 @@ class FileBackupTest {
     }
 
     @Test
+    public void backupFileTest() {
+        app.inputFilePaths("src/test/inTest/test.txt", "src/test/bluh");
+        try {
+            app.backup();
+        } catch (Exception e) {
+            System.out.println("Error [backup]: " + e.getMessage());
+            Assertions.fail();
+        }
+    }
+
+    @Test
     public void copyFolderTest() {
         File source = new File("src/test/inTest");
         File destination = new File("src/test/outTest");
