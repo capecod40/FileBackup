@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,6 +24,20 @@ class FileBackupTest {
 
     @Test
     public void backupTest() {
+        assertTrue(app.getSrc().exists());
+        try {
+            app.backup();
+        } catch (Exception e) {
+            System.out.println("Error [backup]: " + e.getMessage());
+            Assertions.fail();
+        }
+    }
+
+    @Test
+    public void backupTestRandDest() {
+        Random random = new Random();
+        int rand = random.nextInt();
+        app.inputFilePaths("src/test/inTest", "src/test/outTest_" + rand);
         assertTrue(app.getSrc().exists());
         try {
             app.backup();
