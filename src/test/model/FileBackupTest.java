@@ -99,7 +99,7 @@ class FileBackupTest {
 
     @Test
     public void hasFreeMemoryFailTest() {
-        app.inputFilePaths("src/test/inTest", "../");
+        app.inputFilePaths("src/test/inTest", "../../");
         hasFreeMemoryDummyPrintTest();
         assertTrue(app.getDest().getFreeSpace() < FileUtils.sizeOfDirectory(app.getSrc()));
         try {
