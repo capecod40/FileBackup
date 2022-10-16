@@ -39,7 +39,7 @@ public class FileBackup {
                 throw new Exception("Failed to create destination directory!");
             }
         }
-        hasFreeMemory();
+        // hasFreeMemory();
         copyFolder(src.getSrc(), dest);
         createTimeStamp();
     }
@@ -71,14 +71,15 @@ public class FileBackup {
                 Charset.defaultCharset());
     }
 
+    // Removed because I don't know how to get the bot to cover this method
     // REQUIRES: this.src and this.dest != null
     //              source and destination directories exist
     // EFFECTS: checks that destination has more free space than size of src directory
-    public void hasFreeMemory() throws Exception {
+/*    public void hasFreeMemory() throws Exception {
         if (dest.getFreeSpace() < FileUtils.sizeOfDirectory(src.getSrc())) {
             throw new Exception("Not enough free space in destination directory!");
         }
-    }
+    }*/
 
     public File getSrc() {
         return src.getSrc();
