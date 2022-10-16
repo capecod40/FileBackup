@@ -53,7 +53,6 @@ class FileBackupTest {
         } catch (Exception e) {
             System.out.println("Error [copy folder]: " + e.getMessage());
         }
-
     }
 
     @Test
@@ -88,13 +87,19 @@ class FileBackupTest {
 
     @Test
     public void hasFreeMemoryDummyPrintTest() {
-        System.out.println("Destination space (GB): " + app.getDest().getFreeSpace() / 1000000000.0);
+        System.out.println("Destination space (GB): " + app.getDest().getFreeSpace()/ 1000000000.0);
         System.out.println("Source size (bytes): " + FileUtils.sizeOfDirectory(app.getSrc()));
     }
 
     @Test
     public void hasFreeMemoryFailTest() {
-
+        app.inputFilePaths("<>", "<>");
+        try {
+            app.hasFreeMemory();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+        Assertions.fail();
     }
-
 }

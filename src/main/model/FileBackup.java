@@ -18,11 +18,12 @@ import java.time.LocalTime;
 // for the backup.
 // Uses Apache Commons IO FileUtils for file copying and memory checking
 public class FileBackup {
-    private File src;
+    private SrcFile src;
     private File dest;
 
     public FileBackup() {
-        src = dest = null;
+        dest = null;
+        src = new SrcFile();
     }
 
     // REQUIRES: this.src and this.dest != null
@@ -39,7 +40,7 @@ public class FileBackup {
             }
         }
         hasFreeMemory();
-        copyFolder(src, dest);
+        copyFolder(src.getSrc(), dest);
         createTimeStamp();
     }
 
@@ -48,7 +49,7 @@ public class FileBackup {
     // MODIFIES: this
     // EFFECTS: creates and stores File objects according to given String paths
     public void inputFilePaths(String src, String dest) {
-        this.src = new File(src);
+        this.src.setSrc(new File(src));
         this.dest = new File(dest);
     }
 
@@ -66,7 +67,7 @@ public class FileBackup {
     public void createTimeStamp() throws IOException {
         File timestamp = new File(dest.getPath() + "/backup_timestamp.txt");
         FileUtils.writeStringToFile(timestamp,
-                "Backup success\nSource: " + src.getPath() + "\n" + LocalTime.now().toString(),
+                "Backup success\nSource: " + src.getSrc().getPath() + "\n" + LocalTime.now().toString(),
                 Charset.defaultCharset());
     }
 
@@ -74,13 +75,13 @@ public class FileBackup {
     //              source and destination directories exist
     // EFFECTS: checks that destination has more free space than size of src directory
     public void hasFreeMemory() throws Exception {
-        if (dest.getFreeSpace() < FileUtils.sizeOfDirectory(src)) {
+        if (dest.getFreeSpace() < FileUtils.sizeOfDirectory(src.getSrc())) {
             throw new Exception("Not enough free space in destination directory!");
         }
     }
 
     public File getSrc() {
-        return src;
+        return src.getSrc();
     }
 
     public File getDest() {
