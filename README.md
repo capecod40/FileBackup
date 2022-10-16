@@ -31,8 +31,8 @@ focused on graphics rendering. The game didn't have any interaction with the use
 allow me to explore an unfamiliar area in creating desktop applications. Also, the tentative ideas will hopefully expose me to new types of data structures, which will be important in the future. 
 ## User Stories
 - I want to copy a file to another folder
-- I want to copy multiple files (contained in a folder) to another folder
 - I want to copy a folder to another folder
+- I want to copy multiple files (contained in a folder) to another folder
 - I want to be able to find the date and source directory of a backup
 - I want to be able to find the timestamps of backups and see which one is newer
 - I want to get a warning if there is not enough storage in the destination file system 
