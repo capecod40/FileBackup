@@ -18,12 +18,12 @@ import java.time.LocalTime;
 // for the backup.
 // Uses Apache Commons IO FileUtils for file copying and memory checking
 public class FileBackup {
-    private SrcFile src;
+    private File src;
     private File dest;
 
     public FileBackup() {
         dest = null;
-        src = new SrcFile();
+        src = null;
     }
 
     // REQUIRES: this.src and this.dest != null
@@ -39,11 +39,13 @@ public class FileBackup {
                 throw new Exception("Failed to create destination directory!");
             }
         }
-        // hasFreeMemory();
-        if (src.getSrc().isDirectory()) {
-            copyFolder(src.getSrc(), dest);
+/*        if (!hasFreeMemory()) {
+            throw new Exception("Not enough free space in destination directory!");
+        }*/
+        if (src.isDirectory()) {
+            copyFolder(src, dest);
         } else {
-            copyFile(src.getSrc(), dest);
+            copyFile(src, dest);
         }
         createTimeStamp();
     }
@@ -53,7 +55,7 @@ public class FileBackup {
     // MODIFIES: this
     // EFFECTS: creates and stores File objects according to given String paths
     public void inputFilePaths(String src, String dest) {
-        this.src.setSrc(new File(src));
+        this.src = new File(src);
         this.dest = new File(dest);
     }
 
@@ -78,22 +80,24 @@ public class FileBackup {
     public void createTimeStamp() throws IOException {
         File timestamp = new File(dest.getPath() + "/backup_timestamp.txt");
         FileUtils.writeStringToFile(timestamp,
-                "Backup success\nSource: " + src.getSrc().getPath() + "\n" + LocalTime.now().toString(),
+                "Backup success\nSource: " + src.getPath() + "\n" + LocalTime.now().toString(),
                 Charset.defaultCharset());
     }
 
+    // TODO: Talk to TA
     // Removed because I don't know how to get the bot to cover this method
     // REQUIRES: this.src and this.dest != null
     //              source and destination directories exist
     // EFFECTS: checks that destination has more free space than size of src directory
-/*    public void hasFreeMemory() throws Exception {
-        if (dest.getFreeSpace() < FileUtils.sizeOfDirectory(src.getSrc())) {
-            throw new Exception("Not enough free space in destination directory!");
+/*    public boolean hasFreeMemory() {
+        if (dest.getFreeSpace() < FileUtils.sizeOfDirectory(src)) {
+            return false;
         }
+        return true;
     }*/
 
     public File getSrc() {
-        return src.getSrc();
+        return src;
     }
 
     public File getDest() {
