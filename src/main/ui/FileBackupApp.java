@@ -42,6 +42,7 @@ public class FileBackupApp {
             System.out.println("Press [i] for setting source and destination directory paths");
             System.out.println("Press [b] to create a backup");
             System.out.println("Press [s] to save backup log");
+            System.out.println("Press [l] to load backup log");
             System.out.println("Press [q] to quit");
             userInput = input.nextLine();
 
@@ -51,6 +52,8 @@ public class FileBackupApp {
                 backup();
             } else if (userInput.equals("s")) {
                 save();
+            } else if (userInput.equals("l")) {
+                load();
             } else if (userInput.equals("q")) {
                 quit = true;
             }
@@ -83,7 +86,7 @@ public class FileBackupApp {
                 backup.backup();
             } catch (Exception e) {
                 System.out.println("Backup failed");
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("Error [backup]: " + e.getMessage());
                 return;
             }
             System.out.println("Backup successful");
@@ -101,7 +104,17 @@ public class FileBackupApp {
             jsonWriter.close();
         } catch (FileNotFoundException e) {
             System.out.println("Error [json]: JSON file not found!");
+        } catch (Exception e) {
+            System.out.println("Error [json]: Unknown save error!");
         }
+    }
 
+    // TODO: specs
+    public void load() {
+        try {
+            jsonReader.read(backup);
+        } catch (Exception e) {
+            System.out.println("Error [json]: Unknown load error!");
+        }
     }
 }
