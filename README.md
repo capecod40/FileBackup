@@ -35,6 +35,7 @@ allow me to explore an unfamiliar area in creating desktop applications. Also, t
 - I want to copy multiple files (contained in a folder) to another folder
 - I want to be able to find the date and source directory of a backup
 - I want to be able to find the timestamps of backups and see which one is newer
+- I want to add a log entry that records the source path and time for every backup
 <!--
 - I want to get a warning if there is not enough storage in the destination file system
   for the backup

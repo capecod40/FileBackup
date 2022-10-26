@@ -4,26 +4,33 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 // FileBackup:
 // This class takes two directory paths as inputs and copies
 // one directory to the other (aka backs up the folder).
-// If the destination does not exist, a new folder with the specified
-// name will be created. A txt file with information regarding the source directory
-// and time of the backup will also be created in the destination directory.
-// This class also checks that the destination has enough free space
-// for the backup.
+//      If the destination does not exist, a new folder with the specified
+//          name will be created.
+//      A txt file with information regarding the source directory
+//          and time of the backup will also be created in the destination
+//          directory.
+//      Checks that the destination has enough free space for the backup.
+//      Contains a log with date and source directory of each backup
 // Uses Apache Commons IO FileUtils for file copying and memory checking
 public class FileBackup {
     private File src;
     private File dest;
+    private ArrayList<BackupData> log;
 
     public FileBackup() {
         dest = null;
         src = null;
+        log = new ArrayList<>();
     }
 
     // REQUIRES: this.src and this.dest != null
@@ -32,6 +39,7 @@ public class FileBackup {
     //          2. Checks hasFreeMemory()
     //          3. Copies source to destination with copyFolder or copyFile
     //          4. createTimeStamp()
+    //          5. log()
     //          Throws exceptions if any of the operations fail
     public void backup() throws Exception {
         if (!dest.exists()) {
@@ -48,6 +56,19 @@ public class FileBackup {
             copyFile(src, dest);
         }
         createTimeStamp();
+        log();
+    }
+
+    // REQUIRES: this.src != null
+    // MODIFIES: this
+    // EFFECTS: adds BackupData with time and source path to log
+    public void log() {
+        log.add(new BackupData(src.getPath(), LocalTime.now().toString()));
+    }
+
+    // EFFECTS: prints log content
+    public void printLog() {
+        System.out.println(log.toString());
     }
 
     // REQUIRES: String inputs must be valid directory paths and are relative to project directory,

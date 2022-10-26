@@ -123,6 +123,22 @@ class FileBackupTest {
         System.out.println("Source size (bytes): " + FileUtils.sizeOfDirectory(app.getSrc()));
     }
 
+    @Test
+    public void logPrintEmptyTest() {
+        app.printLog();
+    }
+
+    @Test
+    public void logPrintTest() {
+        try {
+            app.backup();
+            app.backup();
+        } catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+        app.printLog();
+    }
+
 /*    @Test
     public void hasFreeMemoryFailTest() {
         app.inputFilePaths("src/test/inTest", "src");
