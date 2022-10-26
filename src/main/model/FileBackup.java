@@ -1,6 +1,8 @@
 package model;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
+import persistence.JsonWriter;
 
 import java.io.File;
 import java.io.IOException;
@@ -105,6 +107,15 @@ public class FileBackup {
                 Charset.defaultCharset());
     }
 
+    // TODO: specs
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        for (BackupData entry : log) {
+            json.put(entry.getSource(), entry.getDate());
+        }
+        return json;
+    }
+
     // TODO: Talk to TA
     // Removed because I don't know how to get the bot to cover this method
     // REQUIRES: this.src and this.dest != null
@@ -123,6 +134,14 @@ public class FileBackup {
 
     public File getDest() {
         return dest;
+    }
+
+    public ArrayList<BackupData> getLog() {
+        return log;
+    }
+
+    public void setLog(ArrayList<BackupData> log) {
+        this.log = log;
     }
 
 }

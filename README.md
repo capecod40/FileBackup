@@ -7,6 +7,10 @@ This application is meant to be a portable, lightweight, and easy to use alterna
 rich file system backup applications. The layout of the user interface will be simple and intuitive to make it 
 accessible for all PC users. Aside from file backups, the user will also be able to see the timestamp of any given backup. Tentative ideas for more features are 
 also listed below. 
+
+## External Code
+- JsonReader and JsonWriter from Phase 2 demo
+- FileUtils library
 ## Core Features
  - File backup: 
 	- User can select source and destination folder

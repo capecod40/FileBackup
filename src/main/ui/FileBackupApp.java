@@ -2,15 +2,22 @@ package ui;
 
 import model.FileBackup;
 import org.apache.commons.io.FileUtils;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 // FileBackupApp:
 // Console ui for FileBackup class
 public class FileBackupApp {
+    private static final String JSON_STORE = "./data/FileBackupAppLog.json";
     private FileBackup backup;
     private Scanner input;
     boolean quit;
+
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: initializes FileBackup and Scanner for keyboard input,
     //              sets quit to false
@@ -18,6 +25,8 @@ public class FileBackupApp {
         backup = new FileBackup();
         input = new Scanner(System.in);
         quit = false;
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
     }
 
     // MODIFIES: this
@@ -32,6 +41,7 @@ public class FileBackupApp {
         while (!quit) {
             System.out.println("Press [i] for setting source and destination directory paths");
             System.out.println("Press [b] to create a backup");
+            System.out.println("Press [s] to save backup log");
             System.out.println("Press [q] to quit");
             userInput = input.nextLine();
 
@@ -39,6 +49,8 @@ public class FileBackupApp {
                 readPaths();
             } else if (userInput.equals("b")) {
                 backup();
+            } else if (userInput.equals("s")) {
+                save();
             } else if (userInput.equals("q")) {
                 quit = true;
             }
@@ -79,5 +91,17 @@ public class FileBackupApp {
         } else {
             System.out.println("Backup cancelled");
         }
+    }
+
+    // TODO: specs
+    public void save() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(backup);
+            jsonWriter.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Error [json]: JSON file not found!");
+        }
+
     }
 }

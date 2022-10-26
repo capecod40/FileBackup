@@ -42,5 +42,6 @@
         <jarDirectory url="file://$MODULE_DIR$/dependencies/commons-io" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="json" level="project" />
   </component>
 </module>
