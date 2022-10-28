@@ -3,15 +3,12 @@ package model;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import persistence.JsonWriter;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.List;
 
 
 // FileBackup:
@@ -91,7 +88,7 @@ public class FileBackup {
     // REQUIRES: this.src != null
     // MODIFIES: this
     // EFFECTS: adds BackupData with time and source path to log
-    private void log() {
+    protected void log() {
         log.add(new BackupData(src.getPath(), LocalTime.now().toString()));
     }
 
@@ -99,37 +96,44 @@ public class FileBackup {
     //              source and destination directories exist
     // EFFECTS: copies src directory to dest directory and throws exception in case of error
     //              If there are pre-existing files in the dest, nothing happens to them (for now >:D)
-    private void copyFolder(File src, File dest) throws IOException {
+    protected void copyFolder(File src, File dest) throws IOException {
         FileUtils.copyDirectory(src, dest);
     }
 
     // REQUIRES: this.src and this.dest != null,
     //              source file and destination directory exist
     // EFFECTS: copies src file to dest directory and throws exception in case of error
-    private void copyFile(File src, File dest) throws IOException {
+    protected void copyFile(File src, File dest) throws IOException {
         FileUtils.copyFileToDirectory(src, dest);
     }
 
     // REQUIRES: this.src and this.dest != null,
     //              source and destination directories exist
     // EFFECTS: creates a txt file in dest directory containing info on the source directory and current time
-    private void createTimeStamp() throws IOException {
+    protected void createTimeStamp() throws IOException {
         File timestamp = new File(dest.getPath() + "/backup_timestamp.txt");
         FileUtils.writeStringToFile(timestamp,
                 "Backup success\nSource: " + src.getPath() + "\n" + LocalTime.now().toString(),
                 Charset.defaultCharset());
     }
 
-    // TODO: Talk to TA
+/*    // TODO: Talk to TA
     // Removed because I don't know how to get the bot to cover this method
     // REQUIRES: this.src and this.dest != null
-    //              source and destination directories exist
-    // EFFECTS: checks that destination has more free space than size of src directory
-/*    public boolean hasFreeMemory() {
-        if (dest.getFreeSpace() < FileUtils.sizeOfDirectory(src)) {
-            return false;
+    //              source file/directory and destination directory exists
+    // EFFECTS: checks that destination has more free space than size of src
+    protected boolean hasFreeMemory() {
+        if (src.isDirectory()) {
+            if (dest.getFreeSpace() < FileUtils.sizeOfDirectory(src)) {
+                return false;
+            }
+            return true;
+        } else {
+            if (dest.getFreeSpace() < FileUtils.sizeOf(src)) {
+                return false;
+            }
+            return true;
         }
-        return true;
     }*/
 
     public File getSrc() {

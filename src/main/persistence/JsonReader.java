@@ -11,6 +11,7 @@ import model.BackupData;
 import model.FileBackup;
 import org.json.*;
 
+// TODO: rework specs
 // Represents a reader that reads workroom from JSON data stored in file
 public class JsonReader {
     private String source;
@@ -25,7 +26,7 @@ public class JsonReader {
     public void read(FileBackup backup) throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        backup.setLog(parseWorkRoom(jsonObject));
+        backup.setLog(parseLog(jsonObject));
     }
 
     // EFFECTS: reads source file as string and returns it
@@ -40,7 +41,7 @@ public class JsonReader {
     }
 
     // EFFECTS: parses workroom from JSON object and returns it
-    private ArrayList<BackupData> parseWorkRoom(JSONObject jsonObject) {
+    private ArrayList<BackupData> parseLog(JSONObject jsonObject) {
         ArrayList<BackupData> logData = new ArrayList<>();
         JSONArray jsonArray = jsonObject.getJSONArray("log");
 

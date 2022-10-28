@@ -10,7 +10,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-class FileBackupTest {
+class FileBackupTest extends FileBackup {
     private FileBackup app;
 
     public FileBackupTest() {
@@ -139,9 +139,9 @@ class FileBackupTest {
         app.printLog();
     }
 
+    // Not possible to test
 /*    @Test
     public void hasFreeMemoryFailTest() {
-        app.inputFilePaths("src/test/inTest", "src");
         hasFreeMemoryDummyPrintTest();
         assertTrue(app.getDest().getFreeSpace() < FileUtils.sizeOfDirectory(app.getSrc()));
         try {
