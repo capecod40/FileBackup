@@ -8,8 +8,7 @@ import org.json.JSONObject;
 import java.io.*;
 import java.util.ArrayList;
 
-// TODO: rework specs
-// Represents a writer that writes JSON representation of workroom to file
+// Represents a writer that writes JSON representation of FileBackup log to file
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
@@ -28,7 +27,7 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of workroom to file
+    // EFFECTS: writes JSON representation of FileBackup log to file
     public void write(FileBackup backup) {
         JSONObject json = backup.toJson();
         saveToFile(json.toString(TAB));

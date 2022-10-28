@@ -20,8 +20,11 @@ import java.util.ArrayList;
 //          and time of the backup will also be created in the destination
 //          directory.
 //      Checks that the destination has enough free space for the backup.
-//      Contains a log with date and source directory of each backup
+//      Contains a log with time, source directory, and destination
+//          directory of each backup
+//
 // Uses Apache Commons IO FileUtils for file copying and memory checking
+// Reuses a portion of demo JsonReader and JsonWriter classes provided on edX
 public class FileBackup {
     private File src;
     private File dest;
@@ -36,7 +39,7 @@ public class FileBackup {
     // REQUIRES: this.src and this.dest != null
     // EFFECTS:
     //          1. Checks if the destination directory exists and creates one if it doesn't
-    //          2. Checks hasFreeMemory()
+    //          2. Checks hasFreeMemory() (currently commented out)
     //          3. Copies source to destination with copyFolder or copyFile
     //          4. createTimeStamp()
     //          5. log()
@@ -75,7 +78,7 @@ public class FileBackup {
         this.dest = new File(dest);
     }
 
-    // TODO: specs
+    // EFFECTS: copies contents of log to JSONArray stored in JSONObject
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
@@ -88,9 +91,9 @@ public class FileBackup {
         return json;
     }
 
-    // REQUIRES: this.src != null
+    // REQUIRES: this.src != null, this.dest != null
     // MODIFIES: this
-    // EFFECTS: adds BackupData with time and source path to log
+    // EFFECTS: adds BackupData with time, source path, and destination path to log
     protected void log() {
         log.add(new BackupData(src.getPath(), dest.getPath(), LocalTime.now().toString()));
     }

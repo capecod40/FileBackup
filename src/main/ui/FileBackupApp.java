@@ -20,8 +20,7 @@ public class FileBackupApp {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    // EFFECTS: initializes FileBackup and Scanner for keyboard input,
-    //              sets quit to false
+    // EFFECTS: initializes all fields
     public FileBackupApp() {
         backup = new FileBackup();
         input = new Scanner(System.in);
@@ -33,10 +32,7 @@ public class FileBackupApp {
 
     // MODIFIES: this
     // EFFECTS: runs a loop that queries for user input
-    //              user options are:
-    //                  [i] for setting source and destination directory paths
-    //                  [b] to create a backup
-    //                  [q] to quit
+    //              calls processInput() to call appropriate methods
     public void run() {
         String userInput;
 
@@ -52,8 +48,11 @@ public class FileBackupApp {
         }
     }
 
+    // REQUIRES: userInput != null
     // MODIFIES: this
     // EFFECTS: processes user input and calls appropriate methods
+    //              ensures that user has entered paths for source
+    //              and destination of backup before calling backup()
     private void processInput(String userInput) {
         if (userInput.equals("i")) {
             readPaths();
@@ -114,7 +113,9 @@ public class FileBackupApp {
         }
     }
 
-    // TODO: specs
+    // MODIFIES: this
+    // EFFECTS: saves FileBackup log to json file
+    //              handles errors in case of exception
     private void save() {
         try {
             jsonWriter.open();
@@ -122,18 +123,23 @@ public class FileBackupApp {
             jsonWriter.close();
         } catch (FileNotFoundException e) {
             System.out.println("Error [json]: JSON file not found!");
+            return;
         } catch (Exception e) {
             System.out.println("Error [json]: Unknown save error!");
+            return;
         }
         System.out.println("Backup log saved!");
     }
 
-    // TODO: specs
+    // MODIFIES: this
+    // EFFECTS: loads json file data to FileBackup log
+    //              handles errors in case of exception
     private void load() {
         try {
             jsonReader.read(backup);
         } catch (Exception e) {
             System.out.println("Error [json]: Unknown load error!");
+            return;
         }
         System.out.println("Backup log loaded!");
     }
