@@ -2,53 +2,85 @@ package ui;
 
 import model.FileBackup;
 import org.apache.commons.io.FileUtils;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 // FileBackupApp:
 // Console ui for FileBackup class
 public class FileBackupApp {
+    private static final String JSON_STORE = "./data/FileBackupAppLog.json";
     private FileBackup backup;
     private Scanner input;
     boolean quit;
+    boolean pathsInitialized;
 
-    // EFFECTS: initializes FileBackup and Scanner for keyboard input,
-    //              sets quit to false
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+
+    // EFFECTS: initializes all fields
     public FileBackupApp() {
         backup = new FileBackup();
         input = new Scanner(System.in);
+        pathsInitialized = false;
         quit = false;
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
     }
 
     // MODIFIES: this
     // EFFECTS: runs a loop that queries for user input
-    //              user options are:
-    //                  [i] for setting source and destination directory paths
-    //                  [b] to create a backup
-    //                  [q] to quit
+    //              calls processInput() to call appropriate methods
     public void run() {
         String userInput;
 
         while (!quit) {
             System.out.println("Press [i] for setting source and destination directory paths");
             System.out.println("Press [b] to create a backup");
+            System.out.println("Press [s] to save backup log");
+            System.out.println("Press [l] to load backup log");
+            System.out.println("Press [p] to print backup log");
             System.out.println("Press [q] to quit");
             userInput = input.nextLine();
-
-            if (userInput.equals("i")) {
-                readPaths();
-            } else if (userInput.equals("b")) {
-                backup();
-            } else if (userInput.equals("q")) {
-                quit = true;
-            }
+            processInput(userInput);
         }
+    }
+
+    // REQUIRES: userInput != null
+    // MODIFIES: this
+    // EFFECTS: processes user input and calls appropriate methods
+    //              ensures that user has entered paths for source
+    //              and destination of backup before calling backup()
+    private void processInput(String userInput) {
+        if (userInput.equals("i")) {
+            readPaths();
+            pathsInitialized = true;
+        } else if (userInput.equals("b")) {
+            if (!pathsInitialized) {
+                System.out.println("Backup source and destination not specified!");
+            } else {
+                backup();
+            }
+        } else if (userInput.equals("s")) {
+            save();
+        } else if (userInput.equals("l")) {
+            load();
+        } else if (userInput.equals("p")) {
+            backup.printLog();
+        } else if (userInput.equals("q")) {
+            quit = true;
+        } else {
+            System.out.println("Invalid input!");
+        }
+        System.out.println("\n");
     }
 
     // MODIFIES: this
     // EFFECTS: Prompts user for source and destination directory for backup and
     //              sends paths as strings to FileBackup
-    public void readPaths() {
+    private void readPaths() {
         System.out.println("**Paths must be relative to project directory**");
         System.out.println("Enter source directory:");
         String src = input.nextLine();
@@ -62,7 +94,7 @@ public class FileBackupApp {
     // 2. Asks user to confirm backup ([y] to confirm, any other key to cancel)
     // 3. Runs backup, prints error message and returns if exception thrown
     // 4. Prints success message if backup completes
-    public void backup() {
+    private void backup() {
         System.out.println("Source directory: " + backup.getSrc().toString());
         System.out.println("Destination directory: " + backup.getDest().toString());
         System.out.println("Press [y] to confirm or any other key to cancel");
@@ -71,7 +103,7 @@ public class FileBackupApp {
                 backup.backup();
             } catch (Exception e) {
                 System.out.println("Backup failed");
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("Error [backup]: " + e.getMessage());
                 return;
             }
             System.out.println("Backup successful");
@@ -79,5 +111,36 @@ public class FileBackupApp {
         } else {
             System.out.println("Backup cancelled");
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: saves FileBackup log to json file
+    //              handles errors in case of exception
+    private void save() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(backup);
+            jsonWriter.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Error [json]: JSON file not found!");
+            return;
+        } catch (Exception e) {
+            System.out.println("Error [json]: Unknown save error!");
+            return;
+        }
+        System.out.println("Backup log saved!");
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads json file data to FileBackup log
+    //              handles errors in case of exception
+    private void load() {
+        try {
+            jsonReader.read(backup);
+        } catch (Exception e) {
+            System.out.println("Error [json]: Unknown load error!");
+            return;
+        }
+        System.out.println("Backup log loaded!");
     }
 }

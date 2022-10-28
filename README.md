@@ -7,6 +7,10 @@ This application is meant to be a portable, lightweight, and easy to use alterna
 rich file system backup applications. The layout of the user interface will be simple and intuitive to make it 
 accessible for all PC users. Aside from file backups, the user will also be able to see the timestamp of any given backup. Tentative ideas for more features are 
 also listed below. 
+
+## External Code
+- JsonReader and JsonWriter from Phase 2 demo
+- FileUtils library
 ## Core Features
  - File backup: 
 	- User can select source and destination folder
@@ -35,6 +39,9 @@ allow me to explore an unfamiliar area in creating desktop applications. Also, t
 - I want to copy multiple files (contained in a folder) to another folder
 - I want to be able to find the date and source directory of a backup
 - I want to be able to find the timestamps of backups and see which one is newer
+- I want to add a log entry that records the source path and time for every backup
+- I want the application to auto-save the backup log entries
+- I want to load up the previous log entries every time I open the app
 <!--
 - I want to get a warning if there is not enough storage in the destination file system
   for the backup
