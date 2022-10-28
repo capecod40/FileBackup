@@ -5,11 +5,13 @@ import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+// Tests for FileBackup class
+//      test for toJson() in JsonWriter test class
 class FileBackupTest extends FileBackup {
     private FileBackup app;
 
@@ -137,6 +139,16 @@ class FileBackupTest extends FileBackup {
             Assertions.fail(e.getMessage());
         }
         app.printLog();
+    }
+
+    @Test
+    public void setLogTest() {
+        ArrayList<BackupData> list = new ArrayList<>();
+        list.add(new BackupData("testSource", "testTime"));
+        app.setLog(list);
+        assertEquals(list, app.getLog());
+        assertEquals(1, app.getLog().size());
+        assertEquals("testSource", app.getLog().get(0).getSource());
     }
 
     // Not possible to test

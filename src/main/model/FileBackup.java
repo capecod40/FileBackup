@@ -148,4 +148,8 @@ public class FileBackup {
         this.log = log;
     }
 
+    public ArrayList<BackupData> getLog() {
+        return log;
+    }
+
 }
