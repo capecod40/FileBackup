@@ -19,7 +19,7 @@ public class JsonWriterTest {
     public void setup() {
         writer = new JsonWriter(JSON_PATH);
         backup = new FileBackup();
-        backup.inputFilePaths("src/test/inTest", "src/test/outTest");
+        backup.inputFilePaths("src/test/backupTests/inTest", "src/test/backupTests/outTest");
         try {
             backup.backup();
         } catch (Exception e) {

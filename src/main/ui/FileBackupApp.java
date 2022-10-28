@@ -15,6 +15,7 @@ public class FileBackupApp {
     private FileBackup backup;
     private Scanner input;
     boolean quit;
+    boolean pathsInitialized;
 
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
@@ -24,6 +25,7 @@ public class FileBackupApp {
     public FileBackupApp() {
         backup = new FileBackup();
         input = new Scanner(System.in);
+        pathsInitialized = false;
         quit = false;
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
@@ -46,21 +48,34 @@ public class FileBackupApp {
             System.out.println("Press [p] to print backup log");
             System.out.println("Press [q] to quit");
             userInput = input.nextLine();
-
-            if (userInput.equals("i")) {
-                readPaths();
-            } else if (userInput.equals("b")) {
-                backup();
-            } else if (userInput.equals("s")) {
-                save();
-            } else if (userInput.equals("l")) {
-                load();
-            } else if (userInput.equals("p")) {
-                backup.printLog();
-            } else if (userInput.equals("q")) {
-                quit = true;
-            }
+            processInput(userInput);
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: processes user input and calls appropriate methods
+    private void processInput(String userInput) {
+        if (userInput.equals("i")) {
+            readPaths();
+            pathsInitialized = true;
+        } else if (userInput.equals("b")) {
+            if (!pathsInitialized) {
+                System.out.println("Backup source and destination not specified!");
+            } else {
+                backup();
+            }
+        } else if (userInput.equals("s")) {
+            save();
+        } else if (userInput.equals("l")) {
+            load();
+        } else if (userInput.equals("p")) {
+            backup.printLog();
+        } else if (userInput.equals("q")) {
+            quit = true;
+        } else {
+            System.out.println("Invalid input!");
+        }
+        System.out.println("\n");
     }
 
     // MODIFIES: this
@@ -110,6 +125,7 @@ public class FileBackupApp {
         } catch (Exception e) {
             System.out.println("Error [json]: Unknown save error!");
         }
+        System.out.println("Backup log saved!");
     }
 
     // TODO: specs
@@ -119,5 +135,6 @@ public class FileBackupApp {
         } catch (Exception e) {
             System.out.println("Error [json]: Unknown load error!");
         }
+        System.out.println("Backup log loaded!");
     }
 }

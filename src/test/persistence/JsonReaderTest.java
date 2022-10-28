@@ -21,7 +21,7 @@ public class JsonReaderTest {
         reader = new JsonReader(JSON_PATH);
         writer = new JsonWriter(JSON_PATH);
         backup = new FileBackup();
-        backup.inputFilePaths("src/test/inTest", "src/test/outTest");
+        backup.inputFilePaths("src/test/backupTests/inTest", "src/test/backupTests/outTest");
         try {
             backup.backup();
             writer.open();

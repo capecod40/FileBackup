@@ -21,7 +21,7 @@ class FileBackupTest extends FileBackup {
     @BeforeEach
     public void setup() {
         app = new FileBackup();
-        app.inputFilePaths("src/test/inTest", "src/test/outTest");
+        app.inputFilePaths("src/test/backupTests/inTest", "src/test/backupTests/outTest");
     }
 
     @Test
@@ -39,7 +39,7 @@ class FileBackupTest extends FileBackup {
     public void backupTestRandDest() {
         Random random = new Random();
         int rand = random.nextInt();
-        app.inputFilePaths("src/test/inTest", "src/test/outTest_" + rand);
+        app.inputFilePaths("src/test/backupTests/inTest", "src/test/backupTests/outTest_" + rand);
         assertTrue(app.getSrc().exists());
         try {
             app.backup();
@@ -63,7 +63,7 @@ class FileBackupTest extends FileBackup {
 
     @Test
     public void backupFileTest() {
-        app.inputFilePaths("src/test/inTest/test.txt", "src/test/bluh");
+        app.inputFilePaths("src/test/backupTests/inTest/test.txt", "src/test/backupTests/bluh");
         try {
             app.backup();
         } catch (Exception e) {
@@ -74,8 +74,8 @@ class FileBackupTest extends FileBackup {
 
     @Test
     public void copyFolderTest() {
-        File source = new File("src/test/inTest");
-        File destination = new File("src/test/outTest");
+        File source = new File("src/test/backupTests/inTest");
+        File destination = new File("src/test/backupTests/outTest");
 
         assertTrue(source.exists());
         try {
@@ -102,9 +102,9 @@ class FileBackupTest extends FileBackup {
 
     @Test
     public void inputFilePathsTest() {
-        app.inputFilePaths("src/test/inTest", "src/test/outTest");
-        assertEquals("src\\test\\inTest", app.getSrc().getPath());
-        assertEquals("src\\test\\outTest", app.getDest().getPath());
+        app.inputFilePaths("src/test/backupTests/inTest", "src/test/backupTests/outTest");
+        assertEquals("src\\test\\backupTests\\inTest", app.getSrc().getPath());
+        assertEquals("src\\test\\backupTests\\outTest", app.getDest().getPath());
     }
 
     @Test
@@ -144,7 +144,7 @@ class FileBackupTest extends FileBackup {
     @Test
     public void setLogTest() {
         ArrayList<BackupData> list = new ArrayList<>();
-        list.add(new BackupData("testSource", "testTime"));
+        list.add(new BackupData("testSource", "testDest", "testTime"));
         app.setLog(list);
         assertEquals(list, app.getLog());
         assertEquals(1, app.getLog().size());

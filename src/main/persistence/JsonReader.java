@@ -45,8 +45,10 @@ public class JsonReader {
         ArrayList<BackupData> logData = new ArrayList<>();
         JSONArray jsonArray = jsonObject.getJSONArray("log");
 
-        for (int i = 0; i < jsonArray.length(); i += 2) {
-            logData.add(new BackupData(jsonArray.getString(i), jsonArray.getString(i + 1)));
+        for (int i = 0; i < jsonArray.length(); i += 3) {
+            logData.add(new BackupData(jsonArray.getString(i),
+                    jsonArray.getString(i + 1),
+                    jsonArray.getString(i + 2)));
         }
 
         return logData;

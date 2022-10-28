@@ -61,7 +61,9 @@ public class FileBackup {
 
     // EFFECTS: prints log content
     public void printLog() {
-        System.out.println(log.toString());
+        for (BackupData entry : log) {
+            System.out.println(entry.toString());
+        }
     }
 
     // REQUIRES: String inputs must be valid directory paths and are relative to project directory,
@@ -81,6 +83,7 @@ public class FileBackup {
         for (BackupData entry : log) {
             jsonArray.put(entry.getSource());
             jsonArray.put(entry.getDate());
+            jsonArray.put(entry.getDate());
         }
         return json;
     }
@@ -89,7 +92,7 @@ public class FileBackup {
     // MODIFIES: this
     // EFFECTS: adds BackupData with time and source path to log
     protected void log() {
-        log.add(new BackupData(src.getPath(), LocalTime.now().toString()));
+        log.add(new BackupData(src.getPath(), dest.getPath(), LocalTime.now().toString()));
     }
 
     // REQUIRES: this.src and this.dest != null,

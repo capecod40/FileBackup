@@ -10,12 +10,13 @@ public class BackupDataTest {
 
     @BeforeEach
     public void setup() {
-        data = new BackupData("testSrc", "testTime");
+        data = new BackupData("testSrc", "testDest", "testTime");
     }
 
     @Test
     public void getterTests() {
         assertTrue(data.getSource().equals("testSrc"));
+        assertTrue(data.getDest().equals("testDest"));
         assertTrue(data.getDate().equals("testTime"));
     }
 
