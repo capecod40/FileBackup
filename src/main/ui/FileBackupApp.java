@@ -43,6 +43,7 @@ public class FileBackupApp {
             System.out.println("Press [b] to create a backup");
             System.out.println("Press [s] to save backup log");
             System.out.println("Press [l] to load backup log");
+            System.out.println("Press [p] to print backup log");
             System.out.println("Press [q] to quit");
             userInput = input.nextLine();
 
@@ -54,6 +55,8 @@ public class FileBackupApp {
                 save();
             } else if (userInput.equals("l")) {
                 load();
+            } else if (userInput.equals("p")) {
+                backup.printLog();
             } else if (userInput.equals("q")) {
                 quit = true;
             }
@@ -63,7 +66,7 @@ public class FileBackupApp {
     // MODIFIES: this
     // EFFECTS: Prompts user for source and destination directory for backup and
     //              sends paths as strings to FileBackup
-    public void readPaths() {
+    private void readPaths() {
         System.out.println("**Paths must be relative to project directory**");
         System.out.println("Enter source directory:");
         String src = input.nextLine();
@@ -77,7 +80,7 @@ public class FileBackupApp {
     // 2. Asks user to confirm backup ([y] to confirm, any other key to cancel)
     // 3. Runs backup, prints error message and returns if exception thrown
     // 4. Prints success message if backup completes
-    public void backup() {
+    private void backup() {
         System.out.println("Source directory: " + backup.getSrc().toString());
         System.out.println("Destination directory: " + backup.getDest().toString());
         System.out.println("Press [y] to confirm or any other key to cancel");
@@ -97,7 +100,7 @@ public class FileBackupApp {
     }
 
     // TODO: specs
-    public void save() {
+    private void save() {
         try {
             jsonWriter.open();
             jsonWriter.write(backup);
@@ -110,7 +113,7 @@ public class FileBackupApp {
     }
 
     // TODO: specs
-    public void load() {
+    private void load() {
         try {
             jsonReader.read(backup);
         } catch (Exception e) {

@@ -41,28 +41,13 @@ public class JsonReader {
 
     // EFFECTS: parses workroom from JSON object and returns it
     private ArrayList<BackupData> parseWorkRoom(JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
-        WorkRoom wr = new WorkRoom(name);
-        addThingies(wr, jsonObject);
-        return wr;
-    }
+        ArrayList<BackupData> logData = new ArrayList<>();
+        JSONArray jsonArray = jsonObject.getJSONArray("log");
 
-    // MODIFIES: wr
-    // EFFECTS: parses thingies from JSON object and adds them to workroom
-    private void addThingies(WorkRoom wr, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("thingies");
-        for (Object json : jsonArray) {
-            JSONObject nextThingy = (JSONObject) json;
-            addThingy(wr, nextThingy);
+        for (int i = 0; i < jsonArray.length(); i += 2) {
+            logData.add(new BackupData(jsonArray.getString(i), jsonArray.getString(i + 1)));
         }
-    }
 
-    // MODIFIES: wr
-    // EFFECTS: parses thingy from JSON object and adds it to workroom
-    private void addThingy(WorkRoom wr, JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
-        Category category = Category.valueOf(jsonObject.getString("category"));
-        Thingy thingy = new Thingy(name, category);
-        wr.addThingy(thingy);
+        return logData;
     }
 }

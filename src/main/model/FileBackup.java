@@ -1,6 +1,7 @@
 package model;
 
 import org.apache.commons.io.FileUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.JsonWriter;
 
@@ -61,13 +62,6 @@ public class FileBackup {
         log();
     }
 
-    // REQUIRES: this.src != null
-    // MODIFIES: this
-    // EFFECTS: adds BackupData with time and source path to log
-    public void log() {
-        log.add(new BackupData(src.getPath(), LocalTime.now().toString()));
-    }
-
     // EFFECTS: prints log content
     public void printLog() {
         System.out.println(log.toString());
@@ -82,38 +76,48 @@ public class FileBackup {
         this.dest = new File(dest);
     }
 
+    // TODO: specs
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        json.put("log", jsonArray);
+        for (BackupData entry : log) {
+            jsonArray.put(entry.getSource());
+            jsonArray.put(entry.getDate());
+        }
+        return json;
+    }
+
+    // REQUIRES: this.src != null
+    // MODIFIES: this
+    // EFFECTS: adds BackupData with time and source path to log
+    private void log() {
+        log.add(new BackupData(src.getPath(), LocalTime.now().toString()));
+    }
+
     // REQUIRES: this.src and this.dest != null,
     //              source and destination directories exist
     // EFFECTS: copies src directory to dest directory and throws exception in case of error
     //              If there are pre-existing files in the dest, nothing happens to them (for now >:D)
-    public void copyFolder(File src, File dest) throws IOException {
+    private void copyFolder(File src, File dest) throws IOException {
         FileUtils.copyDirectory(src, dest);
     }
 
     // REQUIRES: this.src and this.dest != null,
     //              source file and destination directory exist
     // EFFECTS: copies src file to dest directory and throws exception in case of error
-    public void copyFile(File src, File dest) throws IOException {
+    private void copyFile(File src, File dest) throws IOException {
         FileUtils.copyFileToDirectory(src, dest);
     }
 
     // REQUIRES: this.src and this.dest != null,
     //              source and destination directories exist
     // EFFECTS: creates a txt file in dest directory containing info on the source directory and current time
-    public void createTimeStamp() throws IOException {
+    private void createTimeStamp() throws IOException {
         File timestamp = new File(dest.getPath() + "/backup_timestamp.txt");
         FileUtils.writeStringToFile(timestamp,
                 "Backup success\nSource: " + src.getPath() + "\n" + LocalTime.now().toString(),
                 Charset.defaultCharset());
-    }
-
-    // TODO: specs
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        for (BackupData entry : log) {
-            json.put(entry.getSource(), entry.getDate());
-        }
-        return json;
     }
 
     // TODO: Talk to TA
@@ -134,10 +138,6 @@ public class FileBackup {
 
     public File getDest() {
         return dest;
-    }
-
-    public ArrayList<BackupData> getLog() {
-        return log;
     }
 
     public void setLog(ArrayList<BackupData> log) {
