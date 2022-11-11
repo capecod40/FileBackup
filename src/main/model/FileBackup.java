@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-
+// TODO: update SPECS
 // FileBackup:
 // This class takes two directory paths as inputs and copies
 // one directory to the other (aka backs up the folder).
@@ -26,9 +26,9 @@ import java.util.ArrayList;
 // Uses Apache Commons IO FileUtils for file copying and memory checking
 // Reuses a portion of demo JsonReader and JsonWriter classes provided on edX
 public class FileBackup {
-    private File src;
-    private File dest;
-    private ArrayList<BackupData> log;
+    protected File src;
+    protected File dest;
+    protected ArrayList<BackupData> log;
 
     public FileBackup() {
         dest = null;
@@ -73,8 +73,11 @@ public class FileBackup {
     //              src must be an existing directory
     // MODIFIES: this
     // EFFECTS: creates and stores File objects according to given String paths
-    public void inputFilePaths(String src, String dest) {
+    public void inputSourcePath(String src) {
         this.src = new File(src);
+    }
+
+    public void inputDestPath(String dest) {
         this.dest = new File(dest);
     }
 
@@ -85,7 +88,7 @@ public class FileBackup {
         json.put("log", jsonArray);
         for (BackupData entry : log) {
             jsonArray.put(entry.getSource());
-            jsonArray.put(entry.getDate());
+            jsonArray.put(entry.getDest());
             jsonArray.put(entry.getDate());
         }
         return json;
