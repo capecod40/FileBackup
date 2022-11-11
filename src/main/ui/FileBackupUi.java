@@ -1,8 +1,10 @@
 package ui;
 
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import model.BackupData;
 import model.FileBackup;
+import org.apache.commons.io.FileUtils;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -34,6 +36,23 @@ public class FileBackupUi extends FileBackup implements Runnable  {
     private JButton loadLog = new JButton("Load Log");
     private JButton saveLog = new JButton("Save Log");
 
+    private JProgressBar progressBar = new JProgressBar();
+
+    public class Progress extends SwingWorker<Void, Void> {
+        @Override
+        protected Void doInBackground() throws Exception {
+            setProgress(0);
+            progressBar.setIndeterminate(true);
+            while (FileUtils.sizeOfDirectory(dest) < FileUtils.sizeOfDirectory(src)) {
+
+            }
+            progressBar.setIndeterminate(false);
+            return null;
+        }
+    }
+
+    private JCheckBox feelOld = new JCheckBox("I'm feeling old");
+
     public FileBackupUi() {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setMinimumSize(new Dimension(852, 480));
@@ -50,6 +69,8 @@ public class FileBackupUi extends FileBackup implements Runnable  {
 
         initLabelsAndText(constraints);
         initButtons(constraints);
+        initProgressBar(constraints);
+        initFeel(constraints);
         initLog(constraints);
         initButtonListeners();
         initLogListeners();
@@ -97,6 +118,37 @@ public class FileBackupUi extends FileBackup implements Runnable  {
 
         constraints.gridy = 6;
         pane.add(saveLog, constraints);
+    }
+
+    // TODO: put in popup dialog
+    private void initProgressBar(GridBagConstraints constraints) {
+        constraints.gridx = 0;
+        constraints.gridy = 5;
+        pane.add(progressBar, constraints);
+    }
+
+    private void initFeel(GridBagConstraints constraints) {
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.gridx = 0;
+        constraints.gridy = 6;
+        pane.add(feelOld, constraints);
+
+        feelOld.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                if (feelOld.isSelected()) {
+                    try {
+                        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+                        SwingUtilities.updateComponentTreeUI(window);
+                    } catch (Exception e) {
+                        System.out.println("Look and feel exception!");
+                    }
+                } else {
+                    FlatDarkLaf.setup();
+                    SwingUtilities.updateComponentTreeUI(window);
+                }
+            }
+        });
     }
 
     private void initLog(GridBagConstraints constraints) {
@@ -164,6 +216,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         if (confirmBackup() != 0) {
             return;
         }
+        progressBar();
         try {
             super.backup();
         } catch (Exception e) {
@@ -185,6 +238,10 @@ public class FileBackupUi extends FileBackup implements Runnable  {
                 null,
                 options,
                 options[0]);
+    }
+
+    // TODO: make it work with single files
+    private void progressBar() {
     }
 
     private void initLogListeners() {
