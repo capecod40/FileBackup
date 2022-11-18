@@ -2,6 +2,7 @@ package ui;
 
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import misc.Splash;
 import model.BackupData;
 import model.FileBackup;
 import org.apache.commons.io.FileUtils;
@@ -59,6 +60,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         pane.setLayout(new GridBagLayout());
         initPane();
         sourceInitialized = destInitialized = false;
+        Splash splash = new Splash();
     }
 
     private void initPane() {

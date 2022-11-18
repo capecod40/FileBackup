@@ -21,7 +21,8 @@ class FileBackupTest extends FileBackup {
     @BeforeEach
     public void setup() {
         app = new FileBackup();
-        app.inputFilePaths("src/test/backupTests/inTest", "src/test/backupTests/outTest");
+        app.inputSourcePath("src/test/backupTests/inTest");
+        app.inputDestPath("src/test/backupTests/outTest_");
     }
 
     @Test
@@ -39,7 +40,8 @@ class FileBackupTest extends FileBackup {
     public void backupTestRandDest() {
         Random random = new Random();
         int rand = random.nextInt();
-        app.inputFilePaths("src/test/backupTests/inTest", "src/test/backupTests/outTest_" + rand);
+        app.inputSourcePath("src/test/backupTests/inTest");
+        app.inputDestPath("src/test/backupTests/outTest_" + rand);
         assertTrue(app.getSrc().exists());
         try {
             app.backup();
@@ -51,7 +53,8 @@ class FileBackupTest extends FileBackup {
 
     @Test
     public void backupFailTest() {
-        app.inputFilePaths("<>", "<>\"/?|*");
+        app.inputSourcePath("<>");
+        app.inputDestPath("<>\"/?|*");
         try {
             app.backup();
         } catch (Exception e) {
@@ -63,7 +66,8 @@ class FileBackupTest extends FileBackup {
 
     @Test
     public void backupFileTest() {
-        app.inputFilePaths("src/test/backupTests/inTest/test.txt", "src/test/backupTests/bluh");
+        app.inputSourcePath("src/test/backupTests/inTest/test.txt");
+        app.inputDestPath("src/test/backupTests/bluh");
         try {
             app.backup();
         } catch (Exception e) {
@@ -102,7 +106,8 @@ class FileBackupTest extends FileBackup {
 
     @Test
     public void inputFilePathsTest() {
-        app.inputFilePaths("src/test/backupTests/inTest", "src/test/backupTests/outTest");
+        app.inputSourcePath("src/test/backupTests/inTest");
+        app.inputDestPath("src/test/backupTests/outTest_");
         assertEquals("src\\test\\backupTests\\inTest", app.getSrc().getPath());
         assertEquals("src\\test\\backupTests\\outTest", app.getDest().getPath());
     }
