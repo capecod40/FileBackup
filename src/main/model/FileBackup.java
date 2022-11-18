@@ -69,14 +69,17 @@ public class FileBackup {
         }
     }
 
-    // REQUIRES: String inputs must be valid directory paths and are relative to project directory,
+    // REQUIRES: String input must be a valid directory path and relative to project directory,
     //              src must be an existing directory
     // MODIFIES: this
-    // EFFECTS: creates and stores File objects according to given String paths
+    // EFFECTS: creates and stores File object according to given String path
     public void inputSourcePath(String src) {
         this.src = new File(src);
     }
 
+    // REQUIRES: String input must be a valid directory path and relative to project directory,
+    // MODIFIES: this
+    // EFFECTS: creates and stores File object according to given String path
     public void inputDestPath(String dest) {
         this.dest = new File(dest);
     }

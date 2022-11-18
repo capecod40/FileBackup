@@ -2,7 +2,6 @@ package ui;
 
 
 import com.formdev.flatlaf.FlatDarkLaf;
-import misc.Splash;
 import model.BackupData;
 import model.FileBackup;
 import org.apache.commons.io.FileUtils;
@@ -15,6 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
+// FileBackupUi:
+// Graphical user interface for FileBackup class
+// No starter files used; followed Oracle tutorials and googled lots of stack overflow ᕕ(ᐛ)ᕗ
 public class FileBackupUi extends FileBackup implements Runnable  {
     private static final String JSON_STORE = "./data/FileBackupAppLog.json";
     private JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
@@ -37,7 +39,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
     private JButton loadLog = new JButton("Load Log");
     private JButton saveLog = new JButton("Save Log");
 
-    private JProgressBar progressBar = new JProgressBar();
+/*    private JProgressBar progressBar = new JProgressBar();
 
     public class Progress extends SwingWorker<Void, Void> {
         @Override
@@ -50,10 +52,11 @@ public class FileBackupUi extends FileBackup implements Runnable  {
             progressBar.setIndeterminate(false);
             return null;
         }
-    }
+    }*/
 
     private JCheckBox feelOld = new JCheckBox("I'm feeling old");
 
+    //EFFECTS: creates splash screen and initializes JFrame components with GridBagLayout
     public FileBackupUi() {
         initSplash();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,8 +67,9 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         sourceInitialized = destInitialized = false;
     }
 
+    //EFFECTS: creates a splash screen that lasts three seconds O_O
     private void initSplash() {
-        JFrame splash = new JFrame("What");
+        JFrame splash = new JFrame();
         splash.add(new JLabel(new ImageIcon("dependencies/splash.gif")));
         splash.setUndecorated(true);
         splash.setLocationRelativeTo(null);
@@ -76,6 +80,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         splash.dispose();
     }
 
+    //EFFECTS: initializes JFrame components
     private void initPane() {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -91,6 +96,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         initLogListeners();
     }
 
+    //EFFECTS: initializes text labels
     private void initLabelsAndText(GridBagConstraints constraints) {
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -109,6 +115,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         pane.add(destField, constraints);
     }
 
+    //EFFECTS: initializes buttons
     private void initButtons(GridBagConstraints constraints) {
         constraints.fill = GridBagConstraints.NONE;
         constraints.anchor = GridBagConstraints.EAST;
@@ -135,13 +142,16 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         pane.add(saveLog, constraints);
     }
 
-    // TODO: put in popup dialog
-    private void initProgressBar(GridBagConstraints constraints) {
+    // Abandoned progress bar attempt
+/*    private void initProgressBar(GridBagConstraints constraints) {
         constraints.gridx = 0;
         constraints.gridy = 5;
         pane.add(progressBar, constraints);
-    }
+    }*/
+/*    private void progressBar() {
+    }*/
 
+    //EFFECTS: initializes check box for changing look and feel
     private void initFeel(GridBagConstraints constraints) {
         constraints.anchor = GridBagConstraints.WEST;
         constraints.gridx = 0;
@@ -166,6 +176,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         });
     }
 
+    //EFFECTS: initializes log area
     private void initLog(GridBagConstraints constraints) {
         constraints.anchor = GridBagConstraints.WEST;
         constraints.gridx = 1;
@@ -184,6 +195,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         pane.add(logPane, constraints);
     }
 
+    //EFFECTS: initializes ActionListeners for buttons
     private void initButtonListeners() {
         sourceEnter.addActionListener(new ActionListener() {
             @Override
@@ -209,16 +221,20 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         });
     }
 
+    //EFFECTS: sets source directory
     private void inputSource() {
         inputSourcePath(sourceField.getText());
         sourceInitialized = true;
     }
 
+    //EFFECTS: sets destination directory
     private void inputDest() {
         inputDestPath(destField.getText());
         destInitialized = true;
     }
 
+    //EFFECTS: performs backup with user confirmation
+    //          if source or destination paths are blank, shows popup message and cancels backup
     public void backup() {
         inputSource();
         inputDest();
@@ -231,7 +247,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         if (confirmBackup() != 0) {
             return;
         }
-        progressBar();
+/*        progressBar();*/
         try {
             super.backup();
         } catch (Exception e) {
@@ -243,6 +259,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         JOptionPane.showMessageDialog(window, "Backup Successful!");
     }
 
+    //EFFECTS: displays popup window to confirm backup
     private int confirmBackup() {
         Object[] options = {"Confirm", "Cancel"};
         return JOptionPane.showOptionDialog(window,
@@ -255,10 +272,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
                 options[0]);
     }
 
-    // TODO: make it work with single files
-    private void progressBar() {
-    }
-
+    //EFFECTS: initializes ActionListeners for log buttons
     private void initLogListeners() {
         loadLog.addActionListener(new ActionListener() {
             @Override
@@ -276,6 +290,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         });
     }
 
+    //EFFECTS: loads json data
     private void load() {
         try {
             jsonReader.read(FileBackupUi.this);
@@ -291,6 +306,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         JOptionPane.showMessageDialog(window, "Backup log loaded!");
     }
 
+    //EFFECTS: saves log data to json
     private void save() {
         try {
             jsonWriter.open();
@@ -311,37 +327,4 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         window.pack();
         window.setVisible(true);
     }
-
-    public JFrame getWindow() {
-        return window;
-    }
-
-    public void setWindow(JFrame window) {
-        this.window = window;
-    }
-
-    public Container getPane() {
-        return pane;
-    }
-
-    public void setPane(Container pane) {
-        this.pane = pane;
-    }
-
-    public JTextField getSourceField() {
-        return sourceField;
-    }
-
-    public void setSourceField(JTextField sourceField) {
-        this.sourceField = sourceField;
-    }
-
-    public JTextField getDestField() {
-        return destField;
-    }
-
-    public void setDestField(JTextField destField) {
-        this.destField = destField;
-    }
-
 }

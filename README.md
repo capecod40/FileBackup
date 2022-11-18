@@ -46,3 +46,11 @@ allow me to explore an unfamiliar area in creating desktop applications. Also, t
 - I want to get a warning if there is not enough storage in the destination file system
   for the backup
 -->
+# Instructions for Grader
+
+- You can generate the first required event related to adding Xs to a Y by inputting the paths to the source and destination directory for the backup and pressing their respective enter buttons
+- You can generate the second required event related to adding Xs to a Y by pressing the start backup button and confirming the backup
+    - Pressing the start backup button will automatically input source and destination paths
+- You can locate my visual component by starting the application o_o
+- You can save the state of my application by pressing the save log button
+- You can reload the state of my application by pressing the load button
