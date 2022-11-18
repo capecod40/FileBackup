@@ -86,7 +86,8 @@ public class FileBackupApp {
         String src = input.nextLine();
         System.out.println("Enter destination directory:");
         String dest = input.nextLine();
-        backup.inputFilePaths(src, dest);
+        backup.inputSourcePath(src);
+        backup.inputDestPath(dest);
     }
 
     // EFFECTS:

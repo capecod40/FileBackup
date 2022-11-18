@@ -19,7 +19,8 @@ public class JsonWriterTest {
     public void setup() {
         writer = new JsonWriter(JSON_PATH);
         backup = new FileBackup();
-        backup.inputFilePaths("src/test/backupTests/inTest", "src/test/backupTests/outTest");
+        backup.inputSourcePath("src/test/backupTests/inTest");
+        backup.inputDestPath("src/test/backupTests/outTest_");
         try {
             backup.backup();
         } catch (Exception e) {

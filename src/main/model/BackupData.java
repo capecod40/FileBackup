@@ -17,7 +17,7 @@ public class BackupData {
     // EFFECTS: pretty formatting
     @Override
     public String toString() {
-        return "Source:[" + source + "] Destination:[" + dest + "] Time:[" + time + "]";
+        return "Source:[" + source + "]\n\tDestination:[" + dest + "]\n\tTime:[" + time + "]";
     }
 
     public String getSource() {
