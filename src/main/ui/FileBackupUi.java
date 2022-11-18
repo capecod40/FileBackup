@@ -55,12 +55,25 @@ public class FileBackupUi extends FileBackup implements Runnable  {
     private JCheckBox feelOld = new JCheckBox("I'm feeling old");
 
     public FileBackupUi() {
+        initSplash();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setMinimumSize(new Dimension(852, 480));
+        window.setLocationRelativeTo(null);
         pane.setLayout(new GridBagLayout());
         initPane();
         sourceInitialized = destInitialized = false;
-        Splash splash = new Splash();
+    }
+
+    private void initSplash() {
+        JFrame splash = new JFrame("What");
+        splash.add(new JLabel(new ImageIcon("dependencies/splash.gif")));
+        splash.setUndecorated(true);
+        splash.setLocationRelativeTo(null);
+        splash.pack();
+        splash.setVisible(true);
+        long initTime = System.currentTimeMillis();
+        while (System.currentTimeMillis() - initTime < 3000) {}
+        splash.dispose();
     }
 
     private void initPane() {
@@ -71,7 +84,7 @@ public class FileBackupUi extends FileBackup implements Runnable  {
 
         initLabelsAndText(constraints);
         initButtons(constraints);
-        initProgressBar(constraints);
+/*        initProgressBar(constraints);*/
         initFeel(constraints);
         initLog(constraints);
         initButtonListeners();

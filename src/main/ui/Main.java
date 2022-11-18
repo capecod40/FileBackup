@@ -2,6 +2,7 @@ package ui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import misc.Splash;
 
 import javax.swing.*;
 import java.io.File;
