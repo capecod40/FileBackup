@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-// TODO: update SPECS
 // FileBackup:
 // This class takes two directory paths as inputs and copies
 // one directory to the other (aka backs up the folder).
@@ -26,15 +26,10 @@ import java.util.ArrayList;
 // Uses Apache Commons IO FileUtils for file copying and memory checking
 // Reuses a portion of demo JsonReader and JsonWriter classes provided on edX
 public class FileBackup {
-    protected File src;
-    protected File dest;
-    protected ArrayList<BackupData> log;
-
-    public FileBackup() {
-        dest = null;
-        src = null;
-        log = new ArrayList<>();
-    }
+    protected File src = null;
+    protected File dest = null;
+    protected ArrayList<BackupData> log = new ArrayList<>();
+    protected EventLog eventLog = EventLog.getInstance();
 
     // REQUIRES: this.src and this.dest != null
     // EFFECTS:
@@ -69,6 +64,15 @@ public class FileBackup {
         }
     }
 
+    // EFFECTS: prints EventLog content
+    public void printEventLog() {
+        Iterator<Event> iterator = eventLog.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next().toString());
+            System.out.println();
+        }
+    }
+
     // REQUIRES: String input must be a valid directory path and relative to project directory,
     //              src must be an existing directory
     // MODIFIES: this
@@ -100,8 +104,11 @@ public class FileBackup {
     // REQUIRES: this.src != null, this.dest != null
     // MODIFIES: this
     // EFFECTS: adds BackupData with time, source path, and destination path to log
+    //              adds new log to EventLog
     protected void log() {
-        log.add(new BackupData(src.getPath(), dest.getPath(), LocalTime.now().toString()));
+        BackupData backupData = new BackupData(src.getPath(), dest.getPath(), LocalTime.now().toString());
+        log.add(backupData);
+        eventLog.logEvent(new Event(backupData.toStringEventLog()));
     }
 
     // REQUIRES: this.src and this.dest != null,
@@ -129,7 +136,7 @@ public class FileBackup {
                 Charset.defaultCharset());
     }
 
-/*    // TODO: Talk to TA
+/*
     // Removed because I don't know how to get the bot to cover this method
     // REQUIRES: this.src and this.dest != null
     //              source file/directory and destination directory exists
@@ -158,6 +165,10 @@ public class FileBackup {
 
     public void setLog(ArrayList<BackupData> log) {
         this.log = log;
+        eventLog.clear();
+        for (BackupData backupData : log) {
+            eventLog.logEvent(new Event(backupData.toStringEventLog()));
+        }
     }
 
     public ArrayList<BackupData> getLog() {

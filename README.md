@@ -54,3 +54,17 @@ allow me to explore an unfamiliar area in creating desktop applications. Also, t
 - You can locate my visual component by starting the application o_o
 - You can save the state of my application by pressing the save log button
 - You can reload the state of my application by pressing the load button
+# Phase 4: Task 2
+Example output of logged events:
+
+    Mon Nov 28 18:07:31 PST 2022
+        Source:[src\test\backupTests\inTest]
+        Destination:[src\test\backupTests\outTest]
+    
+    Mon Nov 28 18:07:38 PST 2022
+        Source:[src\test\backupTests\inTest]
+        Destination:[src\test\backupTests\outTest1]
+    
+    Mon Nov 28 18:07:42 PST 2022
+        Source:[src\test\backupTests\inTest]
+        Destination:[src\test\backupTests\outTest2]

@@ -107,7 +107,7 @@ class FileBackupTest extends FileBackup {
     @Test
     public void inputFilePathsTest() {
         app.inputSourcePath("src/test/backupTests/inTest");
-        app.inputDestPath("src/test/backupTests/outTest_");
+        app.inputDestPath("src/test/backupTests/outTest");
         assertEquals("src\\test\\backupTests\\inTest", app.getSrc().getPath());
         assertEquals("src\\test\\backupTests\\outTest", app.getDest().getPath());
     }
