@@ -20,6 +20,11 @@ public class BackupData {
         return "Source:[" + source + "]\n\tDestination:[" + dest + "]\n\tTime:[" + time + "]";
     }
 
+    // EFFECTS: pretty formatting but without time for EventLog
+    public String toStringEventLog() {
+        return "Source:[" + source + "]\n\tDestination:[" + dest + "]";
+    }
+
     public String getSource() {
         return source;
     }

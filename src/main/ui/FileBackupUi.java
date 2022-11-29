@@ -12,6 +12,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 
 // FileBackupUi:
@@ -38,21 +40,6 @@ public class FileBackupUi extends FileBackup implements Runnable  {
     private JScrollPane logPane = new JScrollPane(logText);
     private JButton loadLog = new JButton("Load Log");
     private JButton saveLog = new JButton("Save Log");
-
-/*    private JProgressBar progressBar = new JProgressBar();
-
-    public class Progress extends SwingWorker<Void, Void> {
-        @Override
-        protected Void doInBackground() throws Exception {
-            setProgress(0);
-            progressBar.setIndeterminate(true);
-            while (FileUtils.sizeOfDirectory(dest) < FileUtils.sizeOfDirectory(src)) {
-
-            }
-            progressBar.setIndeterminate(false);
-            return null;
-        }
-    }*/
 
     private JCheckBox feelOld = new JCheckBox("I'm feeling old");
 
@@ -89,11 +76,20 @@ public class FileBackupUi extends FileBackup implements Runnable  {
 
         initLabelsAndText(constraints);
         initButtons(constraints);
-/*        initProgressBar(constraints);*/
         initFeel(constraints);
         initLog(constraints);
         initButtonListeners();
         initLogListeners();
+        initWindowListeners();
+    }
+
+    //EFFECTS: print EventLog on application close
+    private void initWindowListeners() {
+        window.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                printEventLog();
+            }
+        });
     }
 
     //EFFECTS: initializes text labels
@@ -141,15 +137,6 @@ public class FileBackupUi extends FileBackup implements Runnable  {
         constraints.gridy = 6;
         pane.add(saveLog, constraints);
     }
-
-    // Abandoned progress bar attempt
-/*    private void initProgressBar(GridBagConstraints constraints) {
-        constraints.gridx = 0;
-        constraints.gridy = 5;
-        pane.add(progressBar, constraints);
-    }*/
-/*    private void progressBar() {
-    }*/
 
     //EFFECTS: initializes check box for changing look and feel
     private void initFeel(GridBagConstraints constraints) {

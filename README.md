@@ -54,3 +54,22 @@ allow me to explore an unfamiliar area in creating desktop applications. Also, t
 - You can locate my visual component by starting the application o_o
 - You can save the state of my application by pressing the save log button
 - You can reload the state of my application by pressing the load button
+# Phase 4: Task 2
+Example output of logged events:
+
+    Mon Nov 28 18:07:31 PST 2022
+        Source:[src\test\backupTests\inTest]
+        Destination:[src\test\backupTests\outTest]
+    
+    Mon Nov 28 18:07:38 PST 2022
+        Source:[src\test\backupTests\inTest]
+        Destination:[src\test\backupTests\outTest1]
+    
+    Mon Nov 28 18:07:42 PST 2022
+        Source:[src\test\backupTests\inTest]
+        Destination:[src\test\backupTests\outTest2]
+
+# Phase 4: Task 3
+- EventLog (which contains Events) and BackupData are redundant. BackupData should be refactored to resemble the structure of EventLog and Events
+- JsonWriter and JsonReader should be associated with FileBackup, not FileBackupUi since they are not related to the user interface
+- The Main class looks lonely. I guess that's a good thing though
