@@ -68,3 +68,8 @@ Example output of logged events:
     Mon Nov 28 18:07:42 PST 2022
         Source:[src\test\backupTests\inTest]
         Destination:[src\test\backupTests\outTest2]
+
+# Phase 4: Task 3
+- EventLog (which contains Events) and BackupData are redundant. BackupData should be refactored to resemble the structure of EventLog and Events
+- JsonWriter and JsonReader should be associated with FileBackup, not FileBackupUi since they are not related to the user interface
+- The Main class looks lonely. I guess that's a good thing though
