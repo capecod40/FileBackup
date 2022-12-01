@@ -22,7 +22,7 @@ class FileBackupTest extends FileBackup {
     public void setup() {
         app = new FileBackup();
         app.inputSourcePath("src/test/backupTests/inTest");
-        app.inputDestPath("src/test/backupTests/outTest_");
+        app.inputDestPath("src/test/backupTests/outTest");
     }
 
     @Test
@@ -41,7 +41,7 @@ class FileBackupTest extends FileBackup {
         Random random = new Random();
         int rand = random.nextInt();
         app.inputSourcePath("src/test/backupTests/inTest");
-        app.inputDestPath("src/test/backupTests/outTest_" + rand);
+        app.inputDestPath("src/test/backupTests/outTest" + rand);
         assertTrue(app.getSrc().exists());
         try {
             app.backup();
@@ -155,6 +155,23 @@ class FileBackupTest extends FileBackup {
         assertEquals(1, app.getLog().size());
         assertEquals("testSource", app.getLog().get(0).getSource());
     }
+
+    @Test
+    public void eventLogTest() {
+        assertTrue(app.getSrc().exists());
+        try {
+            app.backup();
+        } catch (Exception e) {
+            System.out.println("Error [backup]: " + e.getMessage());
+            Assertions.fail();
+        }
+
+        String description = eventLog.iterator().next().getDescription();
+
+        assertTrue(description.equals("Source:[src\\test\\backupTests\\inTest]\n\tDestination:[src\\test\\backupTests\\outTest]"));
+
+    }
+
 
     // Not possible to test
 /*    @Test
